@@ -3,6 +3,29 @@
 import turtle
 import random
 
+
+def tur_goto(xcoord, ycoord):
+    print("Поднимаем перо")
+    turtle.penup()
+    print("Передвигаемся в новую точку")
+    turtle.goto(xcoord, ycoord)
+    print("Опускаем перо")
+    turtle.pendown()
+
+
+def tur_drcir(radius, pen_size, cir_color, line_color = "black"):
+    print("Устанавливаем размер кисти")
+    turtle.pensize(pen_size)
+    print("Устанавливаем цвет заливки")
+    turtle.fillcolor(cir_color)
+    print("Устанавливаем цвет линии")
+    turtle.pencolor(line_color)
+    turtle.begin_fill()
+    print("Рисуем окружность, которая будет заполнена выбранным нами цветом")
+    turtle.circle(radius)
+    print("Делаем заливку выбранным случайным образом цветом")
+    turtle.end_fill()
+
 print("Устанавливаем скорость рисования")
 turtle.speed(1)
 print("Рисуем окружность радиусом 20 точек")
@@ -14,21 +37,8 @@ while answer != 'N':
         print("Выбираем случайное число для цвета")
         brt = random.random()
         for iterate in range(20):
-            print("Поднимаем перо")
-            turtle.penup()
-            print("Передвигаемся в новую точку")
-            turtle.goto(random.randrange(0, 200), random.randrange(0, 200))
-            print("Опускаем перо")
-            turtle.pendown()
-            print("Устанавливаем цвет заливки")
-            turtle.fillcolor(0, random.random(), 0)
-            print("Устанавливаем цвет линии")
-            turtle.pencolor(0, random.random(), 0)
-            turtle.begin_fill()
-            print("Рисуем окружность №" + str(iterate) + ", которая будет заполнена выбранным нами цветом")
-            turtle.circle(random.randrange(10, 100, 10))
-            print("Делаем заливку выбранным случайным образом цветом")
-            turtle.end_fill()
+            tur_goto(random.randrange(0, 200), random.randrange(0, 200))
+            tur_drcir(random.randrange(10, 100), random.randrange(1, 10), "brown", "green")
         print("Закончили рисование")
     elif answer == 'N':
         pass

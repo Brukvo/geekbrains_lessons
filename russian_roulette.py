@@ -26,7 +26,7 @@ r = 50
 turtle.speed(0)
 turtle.title("Turtle + Python 3.x")
 
-turtle_drawcircle(80,1)
+turtle_drawcircle(80, 1, 'white')
 turtle_goto(0, 160)
 turtle_drawcircle(5, 1, "red")
 
@@ -53,7 +53,10 @@ while answer != ("N" and 'n'):
                     int(math.cos(phi_rad) * r) + 60)
         turtle_drawcircle(20, 2, "brown")
         if (i % sectors) == 0:
-            turtle.write("Бах!", font=('Ubuntu', 24, 'normal'))
+            turtle_goto(0, 250)
+            turtle.bgcolor(1.0, 0.25, 0.25)
+            turtle.pencolor('white')
+            turtle.write("Бах!", align='center', font=('Ubuntu', 24, 'normal'))
         print("Рисование окончено")
     elif answer != ('N' and 'n'):
         print("Неверный вариант ответа!")
