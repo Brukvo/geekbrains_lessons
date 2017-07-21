@@ -39,11 +39,12 @@ for i in range(0, 7):
     turtle_drawcircle(20, 2)
 
 answer = ''
+start = 0
 
 while answer != ("N" and 'n'):
     answer = turtle.textinput("Черепашка", "Нарисовать окружность?")
     if answer == ("Y" and "y"):
-        for i in range(0, random.randrange(7, 20)):
+        for i in range(start, random.randrange(7, 20)):
             phi_rad = phi * i * math.pi / 180
             turtle_goto(int(math.sin(phi_rad) * r),
                         int(math.cos(phi_rad) * r) + 60)
@@ -52,7 +53,9 @@ while answer != ("N" and 'n'):
         turtle_goto(int(math.sin(phi_rad) * r),
                     int(math.cos(phi_rad) * r) + 60)
         turtle_drawcircle(20, 2, "brown")
-        if (i % sectors) == 0:
+        start = i % 7
+
+        if (start % sectors) == 0:
             turtle_goto(0, 250)
             turtle.bgcolor(1.0, 0.25, 0.25)
             turtle.pencolor('white')
