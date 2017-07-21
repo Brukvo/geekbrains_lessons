@@ -4,12 +4,15 @@ import psutil
 import shutil
 import os
 import sys
+import random
 
 
 def dupfiles():
+    delimit = "\n________________\n"
     itera = 0
     filelist = os.listdir(os.getcwd())
-    print(delimit + 'После этой операции новые имена файлов приобретут следующие названия:\n')
+    print(delimit + 'После этой операции новые имена файлов приобретут',
+          ' следующие названия:\n')
     for fileitem in filelist:
         if os.path.isfile(fileitem):
             filenew = fileitem + ".dupl"
@@ -24,8 +27,20 @@ def dupfiles():
     else:
         print('Операция прервана.')
 
+
+def dupfiles_np(fld):
+    itera = 0
+    filelist = os.listdir(fld)
+    for fileitem in filelist:
+        if os.path.isfile(fileitem):
+            shutil.copy(fileitem, fileitem + ".dupl")
+            itera += 1
+            print('Файл ' + fileitem + "превратился в" + fileitem + '.dupl')
+
+
 # TODO: добавить больше котят!
 def deldupfiles():
+    delimit = "\n________________\n"
     itera = 0
     filelist = os.listdir(os.getcwd())
     print(delimit + 'Список дубликатов:')
@@ -43,6 +58,16 @@ def deldupfiles():
     if yn == ('N' and 'n'):
         pass
 
+
+def deldupfiles_np(ldir):
+    filelist = os.listdir(ldir)
+    if filelist:
+        i = random.randrange(0, len(filelist))
+        fullname = os.path.join(ldir, filelist[i])
+        if os.path.isfile(fullname):
+            os.remove(fullname)
+
+
 # TODO: здесь котят надо меньше
 def delseldups():
     itera = 0
@@ -59,64 +84,72 @@ def delseldups():
 
 
 def selfiledup():
-    which_file = input("Укажите файл для дублирования относительно текущего расположения (" + os.getcwd() + "): ")
+    which_file = input("Укажите файл для дублирования относительно " +
+                       "текущего расположения (" + os.getcwd() + "): ")
     if os.path.isfile(which_file):
         shutil.copy(which_file, which_file + ".dupl")
     else:
         print("Либо Вы указали папку, либо такого файла нет!")
 
 
-status = 0  # если всё хорошо, останется 0; если пользователь отказался от операции, то будет 1
-work = ''  # заранее формируем переменную для успешного прохождения условия
-i = 0
-delimit = "\n________________\n"  # чтобы и код, и вывод были читабельными; символ \n - как Enter в текстовом редакторе
-name = input("Как Вас зовут? ")
-work = input('Отлично, ' + name + ', а не желаете ли поработать? (Y/N/Q) ')
-while work != ('Q' and 'q'):
-    if work == ('Y' and 'y'):
-        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-        print("Выберите желаемое действие:")
-        print("  [1] показать информацию о системе")
-        # действие 2 доступно только пользователям Linux/UNIX-систем
-        print("  [2] сделать дубликаты файлов текущей папки")
-        print("  [3] удалить дубликаты файлов (.dupl)")
-        print("  [4] сделать дубликат указанного файла")
-        print("  [5] удалить дубликаты в указанной Вами папке")
-        print('  [Q] выход')
-        select = input("Ваш выбор: ")
-        if select == '1':
-            print(delimit + "Информация о системе:\n")
-            print("Текущая папка: " + os.getcwd())
-            print("Ваша домашняя папка: " + os.getenv('HOME'))
-            print("Логин текущего пользователя: " + os.getenv('LOGNAME'))
-            print('В Вашей системе установлено ' + str(psutil.cpu_count()) + " процессор(а).")
-            print('Платформа: ' + sys.platform)
-            print('Кодировка Вашей файловой системы: ' + sys.getfilesystemencoding())
-        elif select == '2':
-            duplicated = str(dupfiles())
-            print("Файлов продублировано: " + duplicated)
-        elif select == '3':
-            dupsdeleted = str(deldupfiles())
-            print("Удалено дубликатов: " + dupsdeleted)
-        elif select == '4':
-            selfiledup()
-        elif select == '5':
-            seldups = str(delseldups())
-            print("Удалено дубликатов в выбранной Вами папке: " + seldups)
-        elif select == ('Q' and 'q'):
-            # чтобы прервать ветвление, пользуемся break
+def loopcycle():
+    status = 0  # 0 = всё хорошо, 1 = возникли проблемы или отказ от операции
+    work = ''  # заранее формируем переменную для успешного прохождения условия
+    i = 0
+    delimit = "\n________________\n"  # для удобства чтения кода и вывода
+    name = input("Как Вас зовут? ")
+    work = input('Отлично, ' + name + ', а не желаете ли поработать? (Y/N/Q) ')
+    while work != ('Q' and 'q'):
+        if work == ('Y' and 'y'):
+            print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+            print("Выберите желаемое действие:")
+            print("  [1] показать информацию о системе")
+            # действие 2 доступно только пользователям Linux/UNIX-систем
+            print("  [2] сделать дубликаты файлов текущей папки")
+            print("  [3] удалить дубликаты файлов (.dupl)")
+            print("  [4] сделать дубликат указанного файла")
+            print("  [5] удалить дубликаты в указанной Вами папке")
+            print('  [Q] выход')
+            select = input("Ваш выбор: ")
+            if select == '1':
+                print(delimit + "Информация о системе:\n")
+                print("Текущая папка: " + os.getcwd())
+                print("Ваша домашняя папка: " + os.getenv('HOME'))
+                print("Логин текущего пользователя: " + os.getenv('LOGNAME'))
+                print('В Вашей системе установлено ' +
+                      str(psutil.cpu_count()) + " процессор(а).")
+                print('Платформа: ' + sys.platform)
+                print('Кодировка Вашей файловой системы: ' +
+                      sys.getfilesystemencoding())
+            elif select == '2':
+                duplicated = str(dupfiles())
+                print("Файлов продублировано: " + duplicated)
+            elif select == '3':
+                dupsdeleted = str(deldupfiles())
+                print("Удалено дубликатов: " + dupsdeleted)
+            elif select == '4':
+                selfiledup()
+            elif select == '5':
+                seldups = str(delseldups())
+                print("Удалено дубликатов в выбранной Вами папке: " + seldups)
+            elif select == ('Q' and 'q'):
+                # чтобы прервать ветвление, пользуемся break
+                break
+            else:
+                print('\n\nНе знаю, чего Вы хотите...\n\n')
+        elif work == ('N' and 'n'):
+            print("\n\nЛадно, отдыхайте.\n\n")
             break
         else:
-            print('\n\nНе знаю, чего Вы хотите...\n\n')
-    elif work == ('N' and 'n'):
-        print("\n\nЛадно, отдыхайте.\n\n")
-        break
+            print("\n\nУпс... Не знаем такого ответа! Только Y, N или",
+                  " Q!\n\n")
+            status = 1
+            break
+    # та самая переменная status
+    if status == 1:
+        print("Аварийное завершение работы.")
     else:
-        print("\n\nУпс... Не знаем такого ответа! Только Y, N или Q!\n\n");
-        status = 1
-        break
-# та самая переменная status
-if status == 1:
-    print("Аварийное завершение работы.")
-else:
-    print('Спасибо за использование Помощника!\nДо свидания!')
+        print('Спасибо за использование Помощника!\nДо свидания!')
+
+if __name__ == "__main__":
+    loopcycle()
